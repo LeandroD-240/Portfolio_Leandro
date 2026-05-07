@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --accent: #1a1a2e;
+    --accent2: #e8c547;
+    --bg: #f5f2eb;
+    --card-bg: #ffffff;
+    --text: #1a1a2e;
+    --muted: #6b6b7a;
+    --tag-bg: #1a1a2e;
+    --tag-text: #e8c547;
+    --border: #e0dcd0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--accent);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1rem 2.5rem;
+  }
+  .nav-logo {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.4rem; color: var(--accent2);
+    cursor: pointer;
+  }
+  .nav-links { display: flex; gap: 2rem; }
+  .nav-links a {
+    color: #ccc; text-decoration: none; font-size: 0.875rem;
+    letter-spacing: 0.05em; transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--accent2); }
+
+  /* HERO */
+  .hero {
+    padding: 5rem 2.5rem 4rem;
+    max-width: 1100px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center;
+  }
+  .hero-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    line-height: 1.1; color: var(--text);
+  }
+  .hero-title em { font-style: italic; color: #555; }
+  .hero-subtitle {
+    margin-top: 1rem; font-size: 1.05rem;
+    color: var(--muted); line-height: 1.7; max-width: 460px;
+  }
+  .hero-cta {
+    margin-top: 2rem; display: flex; gap: 1rem; flex-wrap: wrap;
+  }
+  .btn-primary {
+    background: var(--accent); color: var(--accent2);
+    padding: 0.75rem 1.75rem; border: none; border-radius: 4px;
+    font-family: 'DM Sans', sans-serif; font-size: 0.9rem;
+    font-weight: 500; cursor: pointer; transition: opacity 0.2s;
+    text-decoration: none; display: inline-block;
+  }
+  .btn-primary:hover { opacity: 0.85; }
+  .btn-outline {
+    background: transparent; color: var(--accent);
+    padding: 0.75rem 1.75rem; border: 1.5px solid var(--accent); border-radius: 4px;
+    font-family: 'DM Sans', sans-serif; font-size: 0.9rem;
+    font-weight: 500; cursor: pointer; transition: all 0.2s;
+    text-decoration: none; display: inline-block;
+  }
+  .btn-outline:hover { background: var(--accent); color: var(--accent2); }
+
+  .hero-stats {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;
+  }
+  .stat-card {
+    background: var(--card-bg); border-radius: 8px;
+    border: 1px solid var(--border); padding: 1.5rem;
+  }
+  .stat-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2.5rem; color: var(--accent);
+  }
+  .stat-label { font-size: 0.8rem; color: var(--muted); margin-top: 0.25rem; letter-spacing: 0.08em; text-transform: uppercase; }
+
+  /* SECTION */
+  section { max-width: 1100px; margin: 0 auto; padding: 3rem 2.5rem; }
+  .section-header {
+    display: flex; align-items: baseline; gap: 1.5rem; margin-bottom: 2.5rem;
+  }
+  .section-title {
+    font-family: 'DM Serif Display', serif; font-size: 2rem;
+  }
+  .section-line { flex: 1; height: 1px; background: var(--border); }
+
+  /* FILTER TABS */
+  .filters {
+    display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 2rem;
+  }
+  .filter-btn {
+    padding: 0.4rem 1rem; border-radius: 100px;
+    border: 1.5px solid var(--border); background: transparent;
+    font-family: 'DM Sans', sans-serif; font-size: 0.8rem;
+    color: var(--muted); cursor: pointer; transition: all 0.2s;
+  }
+  .filter-btn.active, .filter-btn:hover {
+    background: var(--accent); border-color: var(--accent); color: var(--accent2);
+  }
+
+  /* PROJECT GRID */
+  .projects-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+  .project-card {
+    background: var(--card-bg); border-radius: 10px;
+    border: 1px solid var(--border); overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+  }
+  .project-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(26,26,46,0.12);
+  }
+  .card-thumb {
+    width: 100%; height: 180px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 3rem; position: relative; overflow: hidden;
+  }
+  .card-body { padding: 1.25rem; }
+  .card-tags { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 0.75rem; }
+  .tag {
+    background: var(--tag-bg); color: var(--tag-text);
+    font-size: 0.7rem; font-weight: 500; letter-spacing: 0.06em;
+    padding: 0.2rem 0.6rem; border-radius: 3px; text-transform: uppercase;
+  }
+  .card-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.2rem; margin-bottom: 0.4rem;
+  }
+  .card-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.6; }
+  .card-footer {
+    padding: 0.9rem 1.25rem;
+    border-top: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .card-date { font-size: 0.75rem; color: var(--muted); }
+  .card-link {
+    font-size: 0.8rem; font-weight: 500;
+    color: var(--accent); text-decoration: none;
+    display: flex; align-items: center; gap: 0.3rem;
+  }
+  .card-link:hover { text-decoration: underline; }
+
+  /* MODAL */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(26,26,46,0.7); z-index: 1000;
+    align-items: center; justify-content: center; padding: 1.5rem;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--card-bg); border-radius: 12px;
+    max-width: 720px; width: 100%; max-height: 90vh;
+    overflow-y: auto; position: relative;
+  }
+  .modal-thumb {
+    width: 100%; height: 220px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 4rem; border-radius: 12px 12px 0 0;
+  }
+  .modal-close {
+    position: absolute; top: 1rem; right: 1rem;
+    background: rgba(255,255,255,0.9); border: none;
+    width: 36px; height: 36px; border-radius: 50%;
+    font-size: 1.1rem; cursor: pointer; display: flex;
+    align-items: center; justify-content: center;
+    color: var(--text); transition: background 0.2s;
+  }
+  .modal-close:hover { background: #fff; }
+  .modal-body { padding: 2rem; }
+  .modal-meta {
+    display: flex; gap: 1rem; align-items: center;
+    margin-bottom: 1rem; flex-wrap: wrap;
+  }
+  .modal-title {
+    font-family: 'DM Serif Display', serif; font-size: 1.8rem; margin-bottom: 1rem;
+  }
+  .modal-desc { color: var(--muted); line-height: 1.8; margin-bottom: 1.5rem; }
+  .modal-section { margin-bottom: 1.5rem; }
+  .modal-section h4 {
+    font-size: 0.75rem; font-weight: 600; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--muted); margin-bottom: 0.6rem;
+  }
+  .tech-stack { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+  .tech-pill {
+    background: var(--bg); border: 1px solid var(--border);
+    padding: 0.3rem 0.8rem; border-radius: 100px;
+    font-size: 0.8rem; color: var(--text);
+  }
+  .modal-links { display: flex; gap: 0.75rem; margin-top: 1.5rem; }
+
+  /* ABOUT STRIP */
+  .about-strip {
+    background: var(--accent);
+    padding: 4rem 2.5rem; margin: 2rem 0;
+  }
+  .about-inner {
+    max-width: 1100px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1.5fr; gap: 4rem; align-items: center;
+  }
+  .about-heading {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2.2rem; color: #fff; line-height: 1.2;
+  }
+  .about-heading em { color: var(--accent2); font-style: italic; }
+  .about-text { color: #aaa; line-height: 1.8; font-size: 0.95rem; }
+  .skills-list {
+    display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.25rem;
+  }
+  .skill-tag {
+    background: rgba(232,197,71,0.15); color: var(--accent2);
+    border: 1px solid rgba(232,197,71,0.3);
+    padding: 0.3rem 0.8rem; border-radius: 3px; font-size: 0.8rem;
+  }
+
+  /* CONTACT */
+  .contact-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+  }
+  .contact-card {
+    background: var(--card-bg); border: 1px solid var(--border);
+    border-radius: 8px; padding: 1.25rem;
+    display: flex; gap: 0.75rem; align-items: flex-start;
+    text-decoration: none; color: var(--text);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .contact-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(26,26,46,0.08);
+  }
+  .contact-icon {
+    width: 36px; height: 36px; border-radius: 6px;
+    background: var(--accent); color: var(--accent2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem; flex-shrink: 0;
+  }
+  .contact-label { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+  .contact-value { font-size: 0.9rem; font-weight: 500; margin-top: 0.1rem; }
+
+  /* FOOTER */
+  footer {
+    background: var(--accent); color: #666;
+    text-align: center; padding: 2rem;
+    font-size: 0.8rem;
+  }
+  footer span { color: var(--accent2); }
+
+  /* UPLOAD HINT BANNER */
+  .upload-hint {
+    background: linear-gradient(135deg, #fff7e0, #fff);
+    border: 1.5px dashed #e8c547; border-radius: 8px;
+    padding: 1.25rem 1.5rem; margin-bottom: 2rem;
+    font-size: 0.85rem; color: #555;
+    display: flex; align-items: center; gap: 0.75rem;
+  }
+  .upload-hint strong { color: var(--accent); }
+
+  @media (max-width: 700px) {
+    .hero { grid-template-columns: 1fr; }
+    .hero-stats { grid-template-columns: 1fr 1fr; }
+    .about-inner { grid-template-columns: 1fr; gap: 2rem; }
+    nav { padding: 1rem 1.25rem; }
+    .nav-links { gap: 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">YourName.</div>
+  <div class="nav-links">
+    <a href="#projects">Projects</a>
+    <a href="#about">About</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div>
+    <h1 class="hero-title">Data Scientist &<br><em>Builder</em> of Things.</h1>
+    <p class="hero-subtitle">I turn messy data into clarity, and ideas into working systems. This is my living portfolio — every project tells a story.</p>
+    <div class="hero-cta">
+      <a href="#projects" class="btn-primary">View Projects ↓</a>
+      <a href="#contact" class="btn-outline">Get in Touch</a>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div class="stat-card">
+      <div class="stat-num" id="proj-count">6</div>
+      <div class="stat-label">Projects</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">3</div>
+      <div class="stat-label">Years Exp.</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">12</div>
+      <div class="stat-label">Technologies</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">∞</div>
+      <div class="stat-label">Curiosity</div>
+    </div>
+  </div>
+</div>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-header">
+    <h2 class="section-title">Projects</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="upload-hint">
+    📌 <div><strong>How to add your own projects:</strong> Open this HTML file in any text editor, find the <code>const projects = [...]</code> array in the script, and add your project following the same format. Save and share the file or host it for free on GitHub Pages or Netlify.</div>
+  </div>
+
+  <div class="filters" id="filters">
+    <button class="filter-btn active" data-cat="all">All</button>
+  </div>
+
+  <div class="projects-grid" id="grid"></div>
+</section>
+
+<!-- ABOUT -->
+<div class="about-strip" id="about">
+  <div class="about-inner">
+    <div>
+      <h2 class="about-heading">Building with <em>data,</em> shipping with purpose.</h2>
+    </div>
+    <div>
+      <p class="about-text">I'm a data scientist and developer who loves turning complex problems into elegant solutions. My work spans machine learning, data visualization, and full-stack development — always focused on real-world impact.</p>
+      <div class="skills-list">
+        <span class="skill-tag">Python</span>
+        <span class="skill-tag">Machine Learning</span>
+        <span class="skill-tag">SQL</span>
+        <span class="skill-tag">Data Visualization</span>
+        <span class="skill-tag">React</span>
+        <span class="skill-tag">Tableau</span>
+        <span class="skill-tag">Power BI</span>
+        <span class="skill-tag">NLP</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-header">
+    <h2 class="section-title">Get in Touch</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="contact-grid">
+    <a href="mailto:you@email.com" class="contact-card">
+      <div class="contact-icon">✉</div>
+      <div>
+        <div class="contact-label">Email</div>
+        <div class="contact-value">you@email.com</div>
+      </div>
+    </a>
+    <a href="https://linkedin.com/in/yourprofile" target="_blank" class="contact-card">
+      <div class="contact-icon">in</div>
+      <div>
+        <div class="contact-label">LinkedIn</div>
+        <div class="contact-value">linkedin.com/in/you</div>
+      </div>
+    </a>
+    <a href="https://github.com/yourprofile" target="_blank" class="contact-card">
+      <div class="contact-icon">⌥</div>
+      <div>
+        <div class="contact-label">GitHub</div>
+        <div class="contact-value">github.com/you</div>
+      </div>
+    </a>
+    <a href="https://kaggle.com/yourprofile" target="_blank" class="contact-card">
+      <div class="contact-icon">K</div>
+      <div>
+        <div class="contact-label">Kaggle</div>
+        <div class="contact-value">kaggle.com/you</div>
+      </div>
+    </a>
+  </div>
+</section>
+
+<footer>
+  Built by <span>Your Name</span> · Hosted for free on GitHub Pages
+</footer>
+
+<!-- PROJECT MODAL -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+  <div class="modal" id="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-thumb" id="modal-thumb"></div>
+    <div class="modal-body">
+      <div class="modal-meta" id="modal-tags"></div>
+      <h2 class="modal-title" id="modal-title"></h2>
+      <p class="modal-desc" id="modal-desc"></p>
+      <div class="modal-section">
+        <h4>Tech Stack</h4>
+        <div class="tech-stack" id="modal-stack"></div>
+      </div>
+      <div class="modal-section" id="modal-highlights-section">
+        <h4>Highlights</h4>
+        <ul id="modal-highlights" style="color:var(--muted);font-size:0.9rem;line-height:2;padding-left:1.2rem;"></ul>
+      </div>
+      <div class="modal-links" id="modal-links"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// =============================================
+// ✏️ EDIT YOUR PROJECTS HERE
+// Add as many as you want! Copy a block and fill in your info.
+// =============================================
+const projects = [
+  {
+    title: "Sales Forecasting Dashboard",
+    category: "Machine Learning",
+    date: "Jan 2025",
+    emoji: "📈",
+    color: "#e8f4f8",
+    short: "Time-series model predicting monthly sales with 94% accuracy, deployed as an interactive Streamlit app.",
+    description: "Built an end-to-end forecasting pipeline using Facebook Prophet and XGBoost. Cleaned 3 years of messy retail data, engineered seasonal features, and deployed the model as an interactive Streamlit dashboard with live filters.",
+    stack: ["Python", "Prophet", "XGBoost", "Streamlit", "Pandas", "Plotly"],
+    highlights: [
+      "94% accuracy on 30-day rolling forecast",
+      "Reduced manual reporting time by 6 hours/week",
+      "Handles seasonality, holidays, and trend breaks"
+    ],
+    demo: "#",
+    code: "#"
+  },
+  {
+    title: "NLP Sentiment Pipeline",
+    category: "NLP",
+    date: "Mar 2025",
+    emoji: "🧠",
+    color: "#f0e8f8",
+    short: "Fine-tuned BERT model for customer review sentiment across 5 languages.",
+    description: "Fine-tuned a multilingual BERT model on 50k+ customer reviews. Built a preprocessing pipeline for 5 languages and packaged the model as a REST API. Integrated with a Power BI dashboard for real-time sentiment monitoring.",
+    stack: ["Python", "HuggingFace", "FastAPI", "Docker", "Power BI"],
+    highlights: [
+      "91% F1-score on held-out test set",
+      "Supports EN, ES, FR, DE, PT",
+      "REST API with <200ms response time"
+    ],
+    demo: "#",
+    code: "#"
+  },
+  {
+    title: "Customer Churn Predictor",
+    category: "Machine Learning",
+    date: "Nov 2024",
+    emoji: "🎯",
+    color: "#fef3e2",
+    short: "Logistic + ensemble model identifying at-risk customers 30 days in advance.",
+    description: "Designed a churn prediction system for a telecom dataset. Compared logistic regression, random forest, and gradient boosting. Implemented SHAP explainability to help business teams understand which factors drive churn.",
+    stack: ["Python", "Scikit-learn", "SHAP", "Matplotlib", "Seaborn"],
+    highlights: [
+      "84% recall on churn class",
+      "SHAP values for full explainability",
+      "Automated weekly scoring pipeline"
+    ],
+    demo: "#",
+    code: "#"
+  },
+  {
+    title: "COVID-19 Data Explorer",
+    category: "Data Visualization",
+    date: "Sep 2024",
+    emoji: "🗺️",
+    color: "#e8f8ee",
+    short: "Interactive global map and timeline built with D3.js and public WHO data.",
+    description: "Created an interactive data visualization tool using D3.js that maps COVID-19 case trends globally. Users can filter by country, date range, and metric. Data is fetched live from the WHO API and cached.",
+    stack: ["JavaScript", "D3.js", "HTML/CSS", "WHO API", "Node.js"],
+    highlights: [
+      "Choropleth map with 190+ countries",
+      "Animated timeline playback",
+      "Mobile-responsive layout"
+    ],
+    demo: "#",
+    code: "#"
+  },
+  {
+    title: "Automated ETL Pipeline",
+    category: "Data Engineering",
+    date: "Jul 2024",
+    emoji: "⚙️",
+    color: "#fce8e8",
+    short: "Airflow DAG pipeline that ingests, validates, and loads 2M+ rows daily.",
+    description: "Built a production-grade ETL pipeline with Apache Airflow that extracts data from 5 APIs, validates schemas with Great Expectations, and loads clean data into Snowflake. Includes alerting and auto-retry logic.",
+    stack: ["Apache Airflow", "Python", "Snowflake", "Great Expectations", "Docker"],
+    highlights: [
+      "2M+ rows processed daily",
+      "Automated data quality checks",
+      "Slack alerting on failures"
+    ],
+    demo: "#",
+    code: "#"
+  },
+  {
+    title: "Recommender System",
+    category: "Machine Learning",
+    date: "May 2024",
+    emoji: "🎬",
+    color: "#e8eef8",
+    short: "Collaborative filtering + content-based hybrid recommender for a movie dataset.",
+    description: "Implemented a hybrid recommender system combining matrix factorization (SVD) with content-based filtering using TF-IDF on movie genres and descriptions. Evaluated with Precision@K and NDCG metrics.",
+    stack: ["Python", "Surprise", "Scikit-learn", "NumPy", "Flask"],
+    highlights: [
+      "Precision@10 of 0.78",
+      "Cold-start handled with content fallback",
+      "Flask API with simple front-end demo"
+    ],
+    demo: "#",
+    code: "#"
+  }
+];
+
+// =============================================
+// RENDERING LOGIC (no need to edit below)
+// =============================================
+const colors = ["#e8f4f8","#f0e8f8","#fef3e2","#e8f8ee","#fce8e8","#e8eef8","#f8f0e8"];
+
+function buildFilters() {
+  const cats = ["all", ...new Set(projects.map(p => p.category))];
+  const f = document.getElementById("filters");
+  f.innerHTML = cats.map(c =>
+    `<button class="filter-btn ${c==='all'?'active':''}" data-cat="${c}">${c==='all'?'All':c}</button>`
+  ).join('');
+  f.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      f.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderGrid(btn.dataset.cat);
+    });
+  });
+}
+
+function renderGrid(cat) {
+  const filtered = cat === 'all' ? projects : projects.filter(p => p.category === cat);
+  document.getElementById('proj-count').textContent = projects.length;
+  document.getElementById('grid').innerHTML = filtered.map((p, i) => `
+    <div class="project-card" onclick="openModal(${projects.indexOf(p)})">
+      <div class="card-thumb" style="background:${p.color||colors[i%colors.length]}">${p.emoji}</div>
+      <div class="card-body">
+        <div class="card-tags"><span class="tag">${p.category}</span></div>
+        <div class="card-title">${p.title}</div>
+        <div class="card-desc">${p.short}</div>
+      </div>
+      <div class="card-footer">
+        <span class="card-date">${p.date}</span>
+        <span class="card-link">View details →</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+function openModal(i) {
+  const p = projects[i];
+  document.getElementById('modal-thumb').style.background = p.color || colors[i % colors.length];
+  document.getElementById('modal-thumb').textContent = p.emoji;
+  document.getElementById('modal-title').textContent = p.title;
+  document.getElementById('modal-desc').textContent = p.description;
+  document.getElementById('modal-tags').innerHTML = `<span class="tag">${p.category}</span><span style="font-size:0.8rem;color:var(--muted)">${p.date}</span>`;
+  document.getElementById('modal-stack').innerHTML = p.stack.map(s => `<span class="tech-pill">${s}</span>`).join('');
+  document.getElementById('modal-highlights').innerHTML = p.highlights.map(h => `<li>${h}</li>`).join('');
+  document.getElementById('modal-links').innerHTML = `
+    ${p.demo && p.demo !== '#' ? `<a href="${p.demo}" target="_blank" class="btn-primary">Live Demo ↗</a>` : ''}
+    ${p.code && p.code !== '#' ? `<a href="${p.code}" target="_blank" class="btn-outline">View Code ↗</a>` : ''}
+  `;
+  document.getElementById('modal-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal(e) {
+  if (!e || e.target === document.getElementById('modal-overlay') || !e.target.closest) {
+    document.getElementById('modal-overlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+buildFilters();
+renderGrid('all');
+</script>
+</body>
+</html>
